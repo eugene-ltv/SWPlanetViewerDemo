@@ -10,6 +10,7 @@ data class PlanetsResponse(
     @JsonClass(generateAdapter = true)
     data class Planet(
         val name: String,
-        val diameter: String
+        val climate: String,
+        val population: String
     )
 }
