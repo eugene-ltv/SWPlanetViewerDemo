@@ -2,22 +2,25 @@ package com.saiferwp.swplanetviewerdemo.planets.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.saiferwp.swplanetviewerdemo.core.api.Api
-import com.saiferwp.swplanetviewerdemo.core.model.PlanetsResponse
+import com.saiferwp.swplanetviewerdemo.planets.model.Planet
+import com.saiferwp.swplanetviewerdemo.planets.usecase.FetchPlanetsListUseCase
+import com.saiferwp.swplanetviewerdemo.planets.usecase.PlanetsListResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PlanetsListViewModel @Inject constructor(
-    private val api: Api
+    private val fetchPlanetsListUseCase: FetchPlanetsListUseCase
 ) : ViewModel() {
 
-    private val _planetsListStateFlow = MutableStateFlow<List<PlanetsResponse.Planet>>(emptyList())
+    private val _planetsListStateFlow =
+        MutableStateFlow<List<Planet>>(emptyList())
     val planetsListStateFlow = _planetsListStateFlow
         .stateIn(
             viewModelScope,
@@ -26,17 +29,16 @@ class PlanetsListViewModel @Inject constructor(
         )
 
     fun requestPlanetsList() {
-        viewModelScope.launch {
-            val response = api.getPlanetsResponse()
-            if (response.isSuccessful) {
-                response.body()?.let { planets->
+        fetchPlanetsListUseCase.invoke(Unit)
+            .onEach { planetsListResult ->
+                if (planetsListResult is PlanetsListResult.Success) {
                     _planetsListStateFlow.update {
-                        planets.results
+                        planetsListResult.data
                     }
+                } else {
+                    // do nothing for now
                 }
-            } else {
-                // do nothing for now
             }
-        }
+            .launchIn(viewModelScope)
     }
 }

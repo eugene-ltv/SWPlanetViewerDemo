@@ -13,12 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.saiferwp.swplanetviewerdemo.core.model.PlanetsResponse
+import com.saiferwp.swplanetviewerdemo.planets.model.Planet
 
 @Composable
 fun PlanetsListScreen(
     modifier: Modifier = Modifier,
-    planetsList: List<PlanetsResponse.Planet>
+    planetsList: List<Planet>
 ) {
     LazyColumn(
         modifier = modifier,
@@ -36,7 +36,7 @@ fun PlanetsListScreen(
 @Composable
 fun PlanetsListCard(
     modifier: Modifier = Modifier,
-    planet: PlanetsResponse.Planet
+    planet: Planet
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -65,6 +65,18 @@ fun PlanetsListCard(
 @Composable
 fun PlanetsListScreenPreview() {
     MaterialTheme {
-        PlanetsListScreen(planetsList = emptyList())
+        PlanetsListScreen(planetsList =
+            listOf(
+                Planet(
+                    name = "Tatooine",
+                    population = "200000",
+                    climate = "Arid"
+                ),
+                Planet(
+                    name = "Alderaan",
+                    population = "2000000000",
+                    climate = "Temperate"
+                )
+            ))
     }
 }

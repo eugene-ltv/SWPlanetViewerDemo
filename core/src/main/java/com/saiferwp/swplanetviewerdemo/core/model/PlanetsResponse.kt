@@ -5,12 +5,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class PlanetsResponse(
     val count: Int,
-    val results: List<Planet>
+    val results: List<PlanetEntity>
 ) {
     @JsonClass(generateAdapter = true)
-    data class Planet(
+    data class PlanetEntity(
         val name: String,
         val climate: String,
         val population: String
     )
+
 }

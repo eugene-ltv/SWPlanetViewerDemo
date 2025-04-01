@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.saiferwp.swplanetviewerdemo.core.model.PlanetsResponse
+import com.saiferwp.swplanetviewerdemo.planets.model.Planet
 import com.saiferwp.swplanetviewerdemo.planets.ui.PlanetsListScreen
 import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetsListViewModel
 import com.saiferwp.swplanetviewerdemo.ui.theme.SWPlanetViewerDemoTheme
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SWPlanetViewerDemoTheme {
                 val viewModel = hiltViewModel<PlanetsListViewModel>()
-                val planetsListState by
+                val planetsList by
                 viewModel.planetsListStateFlow.collectAsStateWithLifecycle()
 
                 LaunchedEffect(Unit) {
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     PlanetsListScreen(
                         modifier = Modifier.padding(innerPadding),
-                        planetsList = planetsListState
+                        planetsList = planetsList
                     )
                 }
             }
@@ -53,15 +53,15 @@ fun PlanetsListScreenPreview() {
         PlanetsListScreen(
             planetsList =
                 listOf(
-                    PlanetsResponse.Planet(
+                    Planet(
                         name = "Tatooine",
                         population = "200000",
-                        climate = "arid"
+                        climate = "Arid"
                     ),
-                    PlanetsResponse.Planet(
+                    Planet(
                         name = "Alderaan",
                         population = "2000000000",
-                        climate = "temperate"
+                        climate = "Temperate"
                     )
                 )
         )
