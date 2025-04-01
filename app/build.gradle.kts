@@ -42,6 +42,7 @@ android {
 
 dependencies {
     api(project(":core"))
+    api(project(":planets"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

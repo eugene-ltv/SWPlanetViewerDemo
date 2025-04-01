@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "SWPlanetViewerDemo"
 include(":app")
 include(":core")
+include(":planets")

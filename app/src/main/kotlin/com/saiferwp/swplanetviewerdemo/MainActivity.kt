@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetsListViewModel
 import com.saiferwp.swplanetviewerdemo.ui.theme.SWPlanetViewerDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SWPlanetViewerDemoTheme {
-                val viewModel = hiltViewModel<MainViewModel>()
+                val viewModel = hiltViewModel<PlanetsListViewModel>()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Android",
