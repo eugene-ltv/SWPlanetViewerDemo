@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -36,16 +36,17 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    kapt {
-        correctErrorTypes = true
+        buildConfig = true
     }
 }
 
 dependencies {
+    api(project(":core"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -56,5 +57,5 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
 }
