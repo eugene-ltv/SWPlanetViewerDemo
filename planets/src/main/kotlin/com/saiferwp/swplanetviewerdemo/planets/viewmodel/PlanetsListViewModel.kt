@@ -1,48 +1,44 @@
 package com.saiferwp.swplanetviewerdemo.planets.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.saiferwp.swplanetviewerdemo.planets.model.Planet
+import com.saiferwp.swplanetviewerdemo.core.BaseViewModel
 import com.saiferwp.swplanetviewerdemo.planets.usecase.FetchPlanetsListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @HiltViewModel
 class PlanetsListViewModel @Inject constructor(
     private val fetchPlanetsListUseCase: FetchPlanetsListUseCase
-) : ViewModel() {
+) : BaseViewModel<PlanetsListUiState, PlanetsListEvent>() {
 
-    private val _planetsListUiStateFlow =
-        MutableStateFlow<PlanetsListUiState>(PlanetsListUiState.Loading)
-    val planetsListUiStateFlow = _planetsListUiStateFlow
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            PlanetsListUiState.Loading
-        )
+    override fun setInitialState() =
+        PlanetsListUiState.Loading
 
-    fun requestPlanetsList() {
+    override fun onInit() {
+        handleEvents(PlanetsListEvent.FetchList)
+    }
+
+    override fun handleEvents(event: PlanetsListEvent) {
+        when (event) {
+            is PlanetsListEvent.FetchList -> requestPlanetsList()
+            is PlanetsListEvent.ReFetchList -> requestPlanetsList()
+        }
+    }
+
+    private fun requestPlanetsList() {
         fetchPlanetsListUseCase.invoke(Unit)
+            .onStart {
+                setState {
+                    PlanetsListUiState.Loading
+                }
+            }
             .onEach { planetsListUiState ->
-                _planetsListUiStateFlow.update { planetsListUiState }
+                setState { planetsListUiState }
             }
             .launchIn(viewModelScope)
     }
-}
 
-sealed interface PlanetsListUiState {
-    data object Loading : PlanetsListUiState
-    data class Error(
-        val errorMessage: String
-    ) : PlanetsListUiState
-
-    data class Success(
-        val planetsList: List<Planet>
-    ) : PlanetsListUiState
 }
