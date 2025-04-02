@@ -1,6 +1,6 @@
 package com.saiferwp.swplanetviewerdemo.planets.model
 
-data class Planet(
+data class PlanetsListItem(
     val id: String,
     val name: String,
     val climate: String,

@@ -1,6 +1,7 @@
 package com.saiferwp.swplanetviewerdemo
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,6 +14,8 @@ import androidx.navigation.navArgument
 import com.saiferwp.swplanetviewerdemo.core.ObserveAsEvents
 import com.saiferwp.swplanetviewerdemo.planets.ui.PlanetDetailsScreen
 import com.saiferwp.swplanetviewerdemo.planets.ui.PlanetsListScreen
+import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetDetailsEvent
+import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetDetailsViewModel
 import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetsListEffect
 import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetsListEvent
 import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetsListViewModel
@@ -56,8 +59,20 @@ fun MainNavHost(
         ) { navBackStackEntry ->
             val planetId =
                 navBackStackEntry.arguments?.getString(PlanetDetails.accountTypeArg)
+
+            val viewModel = hiltViewModel<PlanetDetailsViewModel>()
+            LaunchedEffect(planetId) {
+                viewModel.sendEvent(PlanetDetailsEvent.FetchById(planetId ?: ""))
+            }
+
+            val planetDetailsState by
+            viewModel.viewState.collectAsStateWithLifecycle()
+
             PlanetDetailsScreen(
-                planetId = planetId
+                state = planetDetailsState,
+                onRetry = {
+                    viewModel.sendEvent(PlanetDetailsEvent.FetchById(planetId ?: ""))
+                }
             )
         }
     }

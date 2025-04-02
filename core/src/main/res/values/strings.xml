@@ -4,4 +4,9 @@
     <string name="unknown_exception">Unknown exception</string>
     <string name="unsuccessful_response">Error code: %1$d %2$s</string>
     <string name="retry">Retry</string>
+    <string name="population">Population</string>
+    <string name="climate">Climate</string>
+    <string name="terrain">Terrain</string>
+    <string name="diameter">Diameter</string>
+    <string name="gravity">Gravity</string>
 </resources>

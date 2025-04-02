@@ -3,7 +3,7 @@ package com.saiferwp.swplanetviewerdemo.planets.viewmodel
 import com.saiferwp.swplanetviewerdemo.core.ViewEvent
 import com.saiferwp.swplanetviewerdemo.core.ViewSideEffect
 import com.saiferwp.swplanetviewerdemo.core.ViewState
-import com.saiferwp.swplanetviewerdemo.planets.model.Planet
+import com.saiferwp.swplanetviewerdemo.planets.model.PlanetsListItem
 
 sealed interface PlanetsListUiState : ViewState {
     data object Loading : PlanetsListUiState
@@ -12,7 +12,7 @@ sealed interface PlanetsListUiState : ViewState {
     ) : PlanetsListUiState
 
     data class Success(
-        val planetsList: List<Planet>
+        val planetsList: List<PlanetsListItem>
     ) : PlanetsListUiState
 }
 
