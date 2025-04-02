@@ -24,13 +24,15 @@ import androidx.compose.ui.unit.dp
 import com.saiferwp.swplanetviewerdemo.core.R
 import com.saiferwp.swplanetviewerdemo.core.ui.theme.SWPlanetViewerDemoTheme
 import com.saiferwp.swplanetviewerdemo.planets.model.Planet
+import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetsListEffect
 import com.saiferwp.swplanetviewerdemo.planets.viewmodel.PlanetsListUiState
 
 @Composable
 fun PlanetsListScreen(
     modifier: Modifier = Modifier,
     state: PlanetsListUiState,
-    onRetry: () -> Unit = {}
+    onRetry: () -> Unit = {},
+    setEffect: (PlanetsListEffect) -> Unit = {}
 ) {
     Surface(modifier = modifier) {
         when (state) {
@@ -45,7 +47,8 @@ fun PlanetsListScreen(
             is PlanetsListUiState.Success -> {
                 PlanetsList(
                     planetsList = state.planetsList,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    setEffect = setEffect
                 )
             }
         }
@@ -55,7 +58,8 @@ fun PlanetsListScreen(
 @Composable
 fun PlanetsList(
     modifier: Modifier = Modifier,
-    planetsList: List<Planet>
+    planetsList: List<Planet>,
+    setEffect: (PlanetsListEffect) -> Unit = {}
 ) {
     Surface(modifier = modifier) {
         LazyColumn(
@@ -65,7 +69,10 @@ fun PlanetsList(
         ) {
             items(items = planetsList) { planet ->
                 PlanetsListCard(
-                    planet = planet
+                    planet = planet,
+                    onCardClicked = {
+                        setEffect(PlanetsListEffect.NavigateToPlanetDetails(planet.id))
+                    }
                 )
             }
         }
@@ -75,12 +82,14 @@ fun PlanetsList(
 @Composable
 fun PlanetsListCard(
     modifier: Modifier = Modifier,
-    planet: Planet
+    planet: Planet,
+    onCardClicked: () -> Unit = {}
 ) {
     Surface(
+        modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         shadowElevation = 2.dp,
-        modifier = modifier
+        onClick = onCardClicked
     ) {
         Column(
             modifier = Modifier
@@ -140,11 +149,13 @@ fun PlanetsListScreenPreview() {
             planetsList =
                 listOf(
                     Planet(
+                        id = "1",
                         name = "Tatooine",
                         population = "200000",
                         climate = "Arid"
                     ),
                     Planet(
+                        id = "2",
                         name = "Alderaan",
                         population = "2000000000",
                         climate = "Temperate"

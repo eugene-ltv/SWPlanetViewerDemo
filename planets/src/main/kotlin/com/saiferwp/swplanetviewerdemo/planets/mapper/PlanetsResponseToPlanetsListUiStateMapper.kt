@@ -40,6 +40,9 @@ class PlanetsResponseToPlanetsListUiStateMapper(
     }
 
     private fun PlanetEntity.toPlanet() = Planet(
+        id = url.split("/").let {
+            it.getOrNull(it.lastIndex - 1) ?: ""
+        },
         name = name,
         climate = climate.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
         population = population

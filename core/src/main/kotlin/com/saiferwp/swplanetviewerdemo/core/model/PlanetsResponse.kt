@@ -11,7 +11,8 @@ data class PlanetsResponse(
     data class PlanetEntity(
         val name: String,
         val climate: String,
-        val population: String
+        val population: String,
+        val url: String
     )
 
 }

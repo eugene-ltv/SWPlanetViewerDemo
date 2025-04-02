@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlanetsListViewModel @Inject constructor(
     private val fetchPlanetsListUseCase: FetchPlanetsListUseCase
-) : BaseViewModel<PlanetsListUiState, PlanetsListEvent>() {
+) : BaseViewModel<PlanetsListUiState, PlanetsListEvent, PlanetsListEffect>() {
 
     override fun setInitialState() =
         PlanetsListUiState.Loading
@@ -40,5 +40,4 @@ class PlanetsListViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
     }
-
 }
