@@ -68,11 +68,7 @@ fun PlanetDetails(
             stringResource(R.string.terrain) to planetDetails.terrain
         )
 
-        LazyColumn(
-            Modifier
-                .fillMaxSize()
-                .padding(top = 16.dp)
-        ) {
+        LazyColumn {
             item {
                 Column {
                     Text(
