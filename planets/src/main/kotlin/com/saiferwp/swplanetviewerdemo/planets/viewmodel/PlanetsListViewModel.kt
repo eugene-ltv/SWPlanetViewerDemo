@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.saiferwp.swplanetviewerdemo.planets.model.Planet
 import com.saiferwp.swplanetviewerdemo.planets.usecase.FetchPlanetsListUseCase
-import com.saiferwp.swplanetviewerdemo.planets.usecase.PlanetsListResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,26 +18,31 @@ class PlanetsListViewModel @Inject constructor(
     private val fetchPlanetsListUseCase: FetchPlanetsListUseCase
 ) : ViewModel() {
 
-    private val _planetsListStateFlow =
-        MutableStateFlow<List<Planet>>(emptyList())
-    val planetsListStateFlow = _planetsListStateFlow
+    private val _planetsListUiStateFlow =
+        MutableStateFlow<PlanetsListUiState>(PlanetsListUiState.Loading)
+    val planetsListUiStateFlow = _planetsListUiStateFlow
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
-            emptyList()
+            PlanetsListUiState.Loading
         )
 
     fun requestPlanetsList() {
         fetchPlanetsListUseCase.invoke(Unit)
-            .onEach { planetsListResult ->
-                if (planetsListResult is PlanetsListResult.Success) {
-                    _planetsListStateFlow.update {
-                        planetsListResult.data
-                    }
-                } else {
-                    // do nothing for now
-                }
+            .onEach { planetsListUiState ->
+                _planetsListUiStateFlow.update { planetsListUiState }
             }
             .launchIn(viewModelScope)
     }
+}
+
+sealed interface PlanetsListUiState {
+    data object Loading : PlanetsListUiState
+    data class Error(
+        val errorMessage: String
+    ) : PlanetsListUiState
+
+    data class Success(
+        val planetsList: List<Planet>
+    ) : PlanetsListUiState
 }

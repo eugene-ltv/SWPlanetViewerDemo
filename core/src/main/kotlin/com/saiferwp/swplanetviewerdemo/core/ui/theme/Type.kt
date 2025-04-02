@@ -1,4 +1,4 @@
-package com.saiferwp.swplanetviewerdemo.ui.theme
+package com.saiferwp.swplanetviewerdemo.core.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

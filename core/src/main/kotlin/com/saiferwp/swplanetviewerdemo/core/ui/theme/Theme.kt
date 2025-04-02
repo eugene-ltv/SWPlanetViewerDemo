@@ -1,4 +1,4 @@
-package com.saiferwp.swplanetviewerdemo.ui.theme
+package com.saiferwp.swplanetviewerdemo.core.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
