@@ -40,6 +40,6 @@ fun ErrorView(message: String, onRetry: () -> Unit) {
 @Composable
 fun ErrorPreview() {
     SWPlanetViewerDemoTheme {
-        ErrorView("Error message") {}
+        ErrorView("Error message", onRetry = {})
     }
 }

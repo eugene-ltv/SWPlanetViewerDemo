@@ -17,7 +17,7 @@ class PlanetsListViewModel @Inject constructor(
     override fun setInitialState() =
         PlanetsListUiState.Loading
 
-    override fun onInit() {
+    override fun onStarted() {
         handleEvents(PlanetsListEvent.FetchList)
     }
 

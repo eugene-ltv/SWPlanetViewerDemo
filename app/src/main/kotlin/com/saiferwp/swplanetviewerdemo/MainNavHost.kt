@@ -58,7 +58,7 @@ fun MainNavHost(
             arguments = PlanetDetails.arguments
         ) { navBackStackEntry ->
             val planetId =
-                navBackStackEntry.arguments?.getString(PlanetDetails.accountTypeArg)
+                navBackStackEntry.arguments?.getString(PlanetDetails.planetIdArg)
 
             val viewModel = hiltViewModel<PlanetDetailsViewModel>()
             LaunchedEffect(planetId) {
@@ -88,9 +88,9 @@ data object PlanetsList : MainDestination {
 
 data object PlanetDetails : MainDestination {
     override val route = "planet_details"
-    const val accountTypeArg = "account_type"
-    val routeWithArgs = "$route/{$accountTypeArg}"
+    const val planetIdArg = "planet_id"
+    val routeWithArgs = "$route/{$planetIdArg}"
     val arguments = listOf(
-        navArgument(accountTypeArg) { type = NavType.StringType }
+        navArgument(planetIdArg) { type = NavType.StringType }
     )
 }

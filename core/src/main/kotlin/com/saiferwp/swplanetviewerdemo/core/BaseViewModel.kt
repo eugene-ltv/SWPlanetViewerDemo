@@ -27,7 +27,7 @@ abstract class BaseViewModel<UiState : ViewState, Event : ViewEvent, Effect : Vi
     private val _viewState: MutableStateFlow<UiState> = MutableStateFlow(initialState)
     val viewState: StateFlow<UiState> = _viewState
         .onStart {
-            onInit()
+            onStarted()
         }
         .stateIn(
             scope = viewModelScope,
@@ -42,7 +42,7 @@ abstract class BaseViewModel<UiState : ViewState, Event : ViewEvent, Effect : Vi
         subscribeToEvents()
     }
 
-    open fun onInit() {
+    open fun onStarted() {
     }
 
     private fun subscribeToEvents() {
